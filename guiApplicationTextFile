@@ -1,0 +1,448 @@
+import os 
+import sys
+import tkinter as tk
+from tkinter import ttk
+from tkinter import PhotoImage
+
+LARGE_FONT = ("Verdand", 14)
+
+class CapGuiMain(tk.Tk):
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+
+        self.geometry('{}x{}'.format(800, 400))
+        container = tk.Frame(self)
+        container.pack(side="top", fill="both", expand = True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}                      #empty dictionary
+
+        for F in (MainPage, auStaff, auCourses, auCirriculum, auStudents):
+
+            frame = F(container, self)     #intial frame
+
+            self.frames[F]= frame
+
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame(MainPage)
+
+    def show_frame(self, cont):
+
+        frame = self.frames[cont]
+        frame.tkraise()
+
+class MainPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        #background_image = tk.PhotoImage()
+
+        self.photo=PhotoImage(file="/home/pi/Desktop/GUIPictures/AUAerial1.gif")
+
+
+        MainFrame = tk.Frame(self, bg = "red")
+        MainFrame.pack(side = "top", fill = "both", expand = True)
+
+        PhotoLabel = tk.Label(MainFrame, bg = "#27358D")
+        PhotoLabel.pack(side = "top", fill = "both", expand = True)
+        PhotoLabel.config(image =self.photo)
+
+        button1 = ttk.Button(self, text="AU Staff", command = lambda: controller.show_frame(auStaff))
+        button1.pack(side = "left", ipadx = 50, ipady = 40, padx = 10)
+
+        button2 = ttk.Button(self, text="AU Courses", command = lambda: controller.show_frame(auCourses))
+        button2.pack(side = "left", ipadx = 50, ipady = 40, padx = 10)
+
+        button3 = ttk.Button(self, text="AU Cirriculum", command = lambda: controller.show_frame(auCirriculum))
+        button3.pack(side = "left", ipadx = 50, ipady = 40, padx = 10)
+
+        button4 = ttk.Button(self, text="AU Students", command = lambda:controller.show_frame(auStudents))
+        button4. pack(side = "left", ipadx = 50, ipady = 40, padx = 10)
+
+        self.configure(background="#48aa43")
+
+
+class auStaff(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.configure(background="#48aa43")
+
+        #All the main containers/Labels below
+        DrMiller = tk.Frame(self, bg = "#00467f", width =398, height = 200)
+        DrMiller.grid_propagate(False)
+        ProfOij = tk.Frame(self, bg = "#27358D", width =398, height = 200)
+        ProfOij.grid_propagate(False)
+        ProfLash = tk.Frame(self, bg = "#00467f", width =398, height = 200)
+        ProfLash.grid_propagate(False)
+        ProfKaj = tk.Frame(self, bg = "#27358D", width =398, height = 200)
+        ProfKaj.grid_propagate(False)
+        TopCenter = tk.Frame(self, bg = "#48aa43", height = 10)
+
+
+        #Buttons
+        BackHome = ttk.Button(self, text = "Back", command = lambda:controller.show_frame(MainPage))
+        DrMillerInterview = ttk.Button(DrMiller, text = "Interview", command = lambda:SMiller())
+        OijInterview = ttk.Button(ProfOij, text = "Interview", command = lambda:OijInterview1())
+        LashInterview = ttk.Button(ProfLash, text = "Interview", command = lambda:DLash())
+        KajInterview = ttk.Button(ProfKaj, text = "Interview", command = lambda:KajInterview2())
+
+        #Layout of all the containers
+        TopCenter.grid(row = 0, sticky = "w", columnspan = 5)
+        DrMiller.grid(row = 1, column =0, sticky = "w")
+        ProfOij.grid(row = 1, column =2, sticky = "e")
+        ProfKaj.grid(row = 2, column =0, sticky = "w")
+        ProfLash.grid(row = 2, column =2, sticky = "e")
+
+        #Creating the Labels for the Main Frame
+        AuStaff_label= tk.Label(TopCenter, text = "The Computer Science Department Staff", font = LARGE_FONT, bg = "#48aa43", fg = "#f2f2f2")
+
+        #Creating the Labels for the Top Left Frame (Dr. Miller)
+        Miller_Label=tk.Label(DrMiller, text = "Doctor Miller", font = LARGE_FONT, bg = "#00467f", fg = "#f2f2f2")
+        MillerEmail_Label=tk.Label(DrMiller, text = "sjmiller@aurora.edu", bg = "#00467f", fg = "#f2f2f2")
+        MillerDescLine1_label=tk.Label(DrMiller, text ="PHD from the University of Michigan", bg = "#00467f", fg = "#f2f2f2", justify ="left")
+        MillerDescLine2_label=tk.Label(DrMiller, text ="Teaches classes in Physics and Engineering ", bg = "#00467f", fg = "#f2f2f2")
+        MillerDescLine3_label=tk.Label(DrMiller, text ="Chair of the Computer Science Department", bg = "#00467f", fg = "#f2f2f2")
+
+        #Creating the Labels for the Top Right Frame (Prof Oij)
+        Oij_Label=tk.Label(ProfOij, text = "Professor Oij", font = LARGE_FONT, bg = "#27358D", fg = "#f2f2f2")
+        OijEmail_Label=tk.Label(ProfOij, text = "goij@aurora.edu", bg = "#27358D", fg = "#f2f2f2")
+        OijDescLine1_label=tk.Label(ProfOij, text ="Masters of Computer Science from DePaul   ", bg = "#27358D", fg = "#f2f2f2")
+        OijDescLine2_label=tk.Label(ProfOij, text ="Owns Writer's Work Bench ", bg = "#27358D", fg = "#f2f2f2")
+        OijDescLine3_label=tk.Label(ProfOij, text ="Teaches multiple classes here at AU", bg = "#27358D", fg = "#f2f2f2")
+
+        #Creating the Labels for the Bottom Right Frame (Dr. Lash)
+        Lash_Label=tk.Label(ProfLash, text = "Professor Lash", font = LARGE_FONT, bg = "#00467f", fg = "#f2f2f2")
+        LashEmail_Label=tk.Label(ProfLash, text = "dlash02@gmail.com", bg = "#00467f", fg = "#f2f2f2")
+        LashDescLine1_label=tk.Label(ProfLash, text ="Masters of Computer Science from Waterloo", bg = "#00467f", fg = "#f2f2f2")
+        LashDescLine2_label=tk.Label(ProfLash, text ="Teaches Web Development Classes", bg = "#00467f", fg = "#f2f2f2")
+        LashDescLine3_label=tk.Label(ProfLash, text ="Did Course Work at IIT and SIU", bg = "#00467f", fg = "#f2f2f2")
+
+        #Creating the Labels for the Bottom Left Frame (Prof Kaj)
+        Kaj_Label=tk.Label(ProfKaj, text = "Professor Kajjumba", font = LARGE_FONT, bg = "#27358D", fg = "#f2f2f2")
+        KajEmail_Label=tk.Label(ProfKaj, text = "wkajjumba@aurora.edu", bg = "#27358D", fg = "#f2f2f2")
+        KajDescLine1_label=tk.Label(ProfKaj, text ="Professer at AU for four years ", bg = "#27358D", fg = "#f2f2f2")
+        KajDescLine2_label=tk.Label(ProfKaj, text ="Has Mulitple Certificates in Security, Oracle   ", bg = "#27358D", fg = "#f2f2f2")
+        KajDescLine3_label=tk.Label(ProfKaj, text ="Interested in application integration", bg = "#27358D", fg = "#f2f2f2")
+
+        #Placing the Labels for the Main Frame (AuStaff)
+        AuStaff_label.grid(row = 0, column = 0, sticky = "n", padx = 225)
+
+        #Placing the Labels For Top Left Frame (Dr. Miller)
+        Miller_Label.grid(row = 0, column = 0, sticky = "w")
+        MillerEmail_Label.grid(row = 1,column =0, sticky ="e")
+        MillerDescLine1_label.grid(row =2, column =0, sticky ="w", columnspan = 2)
+        MillerDescLine2_label.grid(row =3, column =0, sticky ="w", columnspan = 2)
+        MillerDescLine3_label.grid(row =4, column =0, sticky ="w", columnspan = 2)
+
+        #Placing the Labels For Top Right Frame (Prof Oij)
+        Oij_Label.grid(row = 0, column = 0, sticky = "w")
+        OijEmail_Label.grid(row = 1,column =0, sticky ="e")
+        OijDescLine1_label.grid(row =2, column =0, sticky ="w", columnspan = 2)
+        OijDescLine2_label.grid(row =3, column =0, sticky ="w", columnspan = 2)
+        OijDescLine3_label.grid(row =4, column =0, sticky ="w", columnspan = 2)
+
+        #Placing the Labels For Bottom Right Frame (Prof Lash)
+        Lash_Label.grid(row = 0, column = 0, sticky = "w")
+        LashEmail_Label.grid(row = 1,column =0, sticky ="e")
+        LashDescLine1_label.grid(row =2, column =0, sticky ="w", columnspan = 2)
+        LashDescLine2_label.grid(row =3, column =0, sticky ="w", columnspan = 2)
+        LashDescLine3_label.grid(row =4, column =0, sticky ="w", columnspan = 2)
+
+        #Placing the Labels For Bottom Right Frame (Prof Kaj)
+        Kaj_Label.grid(row = 0, column = 0, sticky = "w")
+        KajEmail_Label.grid(row = 1,column =0, sticky ="e")
+        KajDescLine1_label.grid(row =2, column =0, sticky ="w", columnspan = 2)
+        KajDescLine2_label.grid(row =3, column =0, sticky ="w", columnspan = 2)
+        KajDescLine3_label.grid(row =4, column =0, sticky ="w", columnspan = 2)
+
+        #Placing the Buttons
+        DrMillerInterview.grid(row = 5, column = 5, sticky = "se", rowspan = 2, columnspan = 2, ipadx = 8, ipady = 12, pady = 20, padx = 5)
+        OijInterview.grid(row = 5, column = 5, sticky = "se", rowspan = 2, columnspan = 2, ipadx = 8, ipady = 12, pady = 20, padx = 5)
+        LashInterview.grid(row = 5, column = 5, sticky = "se", rowspan = 2, columnspan = 2, ipadx = 8, ipady = 12, pady = 20, padx = 5)
+        KajInterview.grid(row = 5, column = 5, sticky = "se", rowspan = 2, columnspan = 2, ipadx = 8, ipady = 12, pady = 20, padx = 5)
+        BackHome.grid(row = 10, column =1, sticky = "sw", ipadx = 75, ipady = 20, columnspan = 5)
+
+
+class auCourses(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.configure(background="#48aa43")
+
+        #Create Frames
+        LeftSide = tk.Frame(self, bg = "#27358D", width = 410, height = 280)
+        LeftSide.grid_propagate(False)
+        RightSide = tk.Frame(self, bg = "#00467f", width = 410, height = 280)
+        RightSide.grid_propagate(False)
+
+        #Place the Frames
+        LeftSide.grid(column = 0, row = 1, sticky = "w")
+        RightSide.grid(column = 1, row = 1, sticky = "e")
+
+        #Create Labels
+        Top_Label = tk.Label(self, text="What classes here at AU would you like learn more about?", bg ="#48aa43", font = LARGE_FONT, fg = "#f2f2f2")
+
+        #Placing Labels
+        Top_Label.grid(row = 0, sticky = "new", columnspan = 3, rowspan = 1)
+
+        #Create Button Below
+        BackHome = ttk.Button(self, text = "Back", command = lambda:controller.show_frame(MainPage), width = 40)
+        TopLeftWeb = ttk.Button(LeftSide, text = "CSC2200 Web Application Dev.", command = lambda:CSC2200())
+        TopLeftComp = ttk.Button(LeftSide, text = "CSC3100 Operating Systems", command = lambda:CSC3100())
+        BottomLeftComp = ttk.Button(LeftSide, text = "CSC3700 Adv. Web Development", command = lambda:CSC3700())
+        BottomLeftData = ttk.Button(LeftSide, text = "CSC4210 Introduction to Mobile App.", command = lambda:CSC4210())
+        TopRightWeb = ttk.Button(RightSide, text = "CSC2300 Computer Architecture", command = lambda:CSC2300())
+        TopRightComp = ttk.Button(RightSide, text = "CSC3200 UNIX/LINUX Admin,", command = lambda:CSC3200())
+        BottomRightComp = ttk.Button(RightSide, text = "CSC3800 Artificial Intelligence", command = lambda:CSC3800())
+        BottomRightData = ttk.Button(RightSide, text = "CSC3850 Intro to Robotics", command = lambda:CSC3850())
+
+        #Place Buttons Below
+        TopLeftWeb.grid (row =0, column =1, sticky = "n", columnspan = 2, ipady = 10, pady =10, ipadx = 47, padx = 80)
+        TopLeftComp.grid (row =1, column =1, sticky = "n", columnspan = 2, ipady = 10, pady =10, ipadx = 47, padx = 80)
+        BottomLeftComp.grid(row =2, column =1, sticky = "n", columnspan = 2, ipady = 10, pady =10, ipadx = 47, padx = 80)
+        BottomLeftData.grid(row =3, column =1, sticky = "n", columnspan = 2, ipady = 10, pady =10, ipadx = 47, padx = 80)
+        TopRightWeb.grid(row = 0, column = 1, sticky = "n", columnspan = 2, ipady = 10, pady =10, ipadx = 47, padx = 80)
+        TopRightComp.grid(row =1, column =1, sticky = "n", columnspan = 2, ipady = 10, pady =10, ipadx = 47, padx = 80)
+        BottomRightComp.grid(row =2, column =1, sticky = "n", columnspan = 2, ipady = 10, pady =10, ipadx = 47, padx = 80)
+        BottomRightData.grid(row =3, column =1, sticky = "n", columnspan = 2, ipady = 10, pady =9, ipadx = 47, padx = 80)
+        BackHome.grid(row =10, column =0, sticky = "s", pady = 5, ipady = 30, columnspan =2)
+
+class auCirriculum(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        CustomFont = ()
+
+        #Creating Main Frame Below
+        MainFrame = tk.Frame(self, bg = "blue")
+        TopFrame = tk.Frame(MainFrame, bg = "red")
+        BottomFrame = tk.Frame(MainFrame, bg = "#47aa42")
+        TopLeftFrame = tk.Frame(MainFrame, bg = "#00467f", width = 22)
+        TopRightFrame = tk.Frame(MainFrame, bg = "#27358D", width = 22)
+        BotLeftFrame = tk.Frame(MainFrame, bg = "#27358D", width = 22)
+        BotRightFrame = tk.Frame(MainFrame, bg = "#00467f", width = 22)
+
+        #Placing the Main Frame
+        MainFrame.pack(side = "top", fill = "both", expand = True)
+        TopFrame.pack(side = "top", fill = "x", expand = False)
+        BottomFrame.pack(side = "bottom", fill = "both", expand = False)
+        TopLeftFrame.pack(side = "left", fill = "both", expand = True)
+        TopRightFrame.pack(side = "right", fill = "both", expand = True)
+        BotLeftFrame.pack(side = "left", fill = "both", expand = True)
+        BotRightFrame.pack(side = "left", fill = "both", expand = True)
+
+        #Creating Labels
+        TopOfPageLabel = tk.Label(TopFrame, text = "Here are some examples of classes you may want to take if you want to specialization" + "\n" + "in one of the following areas of Computer Science:", font = LARGE_FONT, bg = "#47aa42", fg = "#f2f2f2" )
+
+        TopPurplelabel = tk.Label(TopLeftFrame, text = "Web Development", bg = "#00467f", font = LARGE_FONT, fg = "#f2f2f2")
+        PurpleDesclabel = tk.Label(TopLeftFrame, text = "CSC2200 Web Application Dev.", bg = "#00467f", wraplength = 100, fg = "#f2f2f2")
+        PurpleDesclabel2 = tk.Label(TopLeftFrame, text = "CSC3400 Computer Security", bg = "#00467f", wraplength = 100, fg = "#f2f2f2")
+        PurpleDesclabel3 = tk.Label(TopLeftFrame, text = "CSC3700 Advanced Web Application Dev.", bg = "#00467f", wraplength = 100, fg = "#f2f2f2")
+        PurpleDesclabel4 = tk.Label(TopLeftFrame, text = "CSC4210 Intro To Mobile App Dev", bg = "#00467f", wraplength = 100, fg = "#f2f2f2")
+        PurpleDesclabel5 = tk.Label(TopLeftFrame, text = "CSC4350 Software Engineering", bg = "#00467f", wraplength = 100, fg = "#f2f2f2")
+
+        TopYellowlabel = tk.Label(TopRightFrame, text = "Software Engineering", bg = "#27358D", font = LARGE_FONT, fg = "#f2f2f2")
+        YellowDesclabel = tk.Label(TopRightFrame, text = "CSC2400 C++ For Java Developers", bg = "#27358D", wraplength = 100, fg = "#f2f2f2")
+        YellowDesclabel2 = tk.Label(TopRightFrame, text = "CSC3200 UNIX/LINUX Admin", bg = "#27358D", wraplength = 100, fg = "#f2f2f2")
+        YellowDesclabel3 = tk.Label(TopRightFrame, text = "CSC3610 Advanced Programming", bg = "#27358D", wraplength = 100, fg = "#f2f2f2")
+        YellowDesclabel4 = tk.Label(TopRightFrame, text = "CSC4350 Software Engineering", bg = "#27358D", wraplength = 100, fg = "#f2f2f2")
+        YellowDesclabel5 = tk.Label(TopRightFrame, text = "CSC4500 Database Design and Implementation", bg = "#27358D", wraplength = 100, fg = "#f2f2f2")
+
+        TopGreenlabel = tk.Label(BotLeftFrame, text = "Electrical Engineering", bg = "#27358D", font = LARGE_FONT, fg = "#f2f2f2")
+        GreenDesclabel = tk.Label(BotLeftFrame, text = "CSC2300 Computer Architecture", bg = "#27358D", wraplength = 100, fg = "#f2f2f2")
+        GreenDesclabel2 = tk.Label(BotLeftFrame, text = "CSC2400 C++ For Java Developers", bg = "#27358D", wraplength = 100, fg = "#f2f2f2")
+        GreenDesclabel3 = tk.Label(BotLeftFrame, text = "CSC3100 Operating Systems", bg = "#27358D", wraplength = 100, fg = "#f2f2f2")
+        GreenDesclabel4 = tk.Label(BotLeftFrame, text = "CSC3800 Artificial Intelligence", bg = "#27358D", wraplength = 100, fg = "#f2f2f2")
+        GreenDesclabel5 = tk.Label(BotLeftFrame, text = "CSC3850 Introduction to Robotics", bg = "#27358D", wraplength = 100, fg = "#f2f2f2")
+
+        TopBrownlabel = tk.Label(BotRightFrame, text = "Network Engineering", bg = "#00467f", font = LARGE_FONT, fg = "#f2f2f2")
+        BrownDesclabel = tk.Label(BotRightFrame, text = "CSC2200 Web Application Dev.", bg = "#00467f", wraplength = 100, fg = "#f2f2f2")
+        BrownDesclabel2 = tk.Label(BotRightFrame, text = "CSC2550 Network Communication", bg = "#00467f", wraplength = 100, fg = "#f2f2f2")
+        BrownDesclabel3 = tk.Label(BotRightFrame, text = "CSC3200 UNIX/LINUX Admin", bg = "#00467f", wraplength = 100, fg = "#f2f2f2")
+        BrownDesclabel4 = tk.Label(BotRightFrame, text = "CSC3400 Computer Security", bg = "#00467f", wraplength = 100, fg = "#f2f2f2")
+        BrownDesclabel5 = tk.Label(BotRightFrame, text = "CSC4100 System Analysis and Design", bg = "#00467f", wraplength = 100, fg = "#f2f2f2")
+
+        #Placing Labels
+        TopOfPageLabel.pack(side = "top", fill = "x", expand = True)
+        TopPurplelabel.pack(side = "top", fill = "x", expand = False)
+
+        PurpleDesclabel.pack(side = "top", expand = False)
+        PurpleDesclabel2.pack(side = "top", expand = False)
+        PurpleDesclabel3.pack(side = "top", expand = False)
+        PurpleDesclabel4.pack(side = "top", expand = False)
+        PurpleDesclabel5.pack(side = "top", expand = False)
+
+        TopYellowlabel.pack(side = "top", fill = "x", expand = False)
+        YellowDesclabel.pack(side = "top", expand = False)
+        YellowDesclabel2.pack(side = "top", expand = False)
+        YellowDesclabel3.pack(side = "top", expand = False)
+        YellowDesclabel4.pack(side = "top", expand = False)
+        YellowDesclabel5.pack(side = "top", expand = False)
+
+        TopGreenlabel.pack(side = "top", fill = "x", expand = False)
+        GreenDesclabel.pack(side = "top", expand = False)
+        GreenDesclabel2.pack(side = "top", expand = False)
+        GreenDesclabel3.pack(side = "top", expand = False)
+        GreenDesclabel4.pack(side = "top", expand = False)
+        GreenDesclabel5.pack(side = "top", expand = False)
+
+        TopBrownlabel.pack(side = "top", fill = "x", expand = False)
+        BrownDesclabel.pack(side = "top", expand = False)
+        BrownDesclabel2.pack(side = "top", expand = False)
+        BrownDesclabel3.pack(side = "top", expand = False)
+        BrownDesclabel4.pack(side = "top", expand = False)
+        BrownDesclabel5.pack(side = "top", expand = False)
+
+        #Create the Button
+        TakeMeHomeScottie = ttk.Button(BottomFrame, text="Back", command = lambda:controller.show_frame(MainPage))
+
+        #Place The button
+        TakeMeHomeScottie.pack(side = "bottom", ipady = 30, ipadx = 75)
+
+class auStudents(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        self.configure(background="#48aa43")
+
+        TopMainLabel = tk.Label(self, text = "Select on a graduate to learn about their experiences at Aurora University ", font = LARGE_FONT, fg = "#f2f2f2", bg = "#47aa42")
+        TopMainLabel.pack(side = "top", pady = 10, padx = 10)
+
+        #Creating the Frame Below
+        TheMainFrame = tk.Frame(self, bg = "yellow")
+        FrameOne = tk.Frame(TheMainFrame, bg = "red")
+        FrameTwo = tk.Frame(TheMainFrame, bg = "blue")
+        FrameThree = tk.Frame(TheMainFrame, bg = "green")
+        FrameFour = tk.Frame(TheMainFrame, bg = "purple")
+
+        #Placing Frames
+        TheMainFrame.pack (side = "top", fill = "both", expand = True)
+        FrameOne.pack(side = "left", fill = "both", expand = True)
+        FrameTwo.pack(side = "right", fill = "both", expand = True)
+        FrameThree.pack(side = "right", fill = "both", expand = True)
+        FrameFour.pack(side = "right", fill = "both", expand = True)
+
+        #Photos Below
+
+        self.photo=PhotoImage(file="/home/pi/Desktop/GUIPictures/ZachImage.png")
+        self.photo2=PhotoImage(file="/home/pi/Desktop/GUIPictures/SticklyImage.png")
+        self.photo3=PhotoImage(file="/home/pi/Desktop/GUIPictures/FloresImage.png")
+        self.photo4=PhotoImage(file="/home/pi/Desktop/GUIPictures/DerrickImage.png")
+
+        #Create a Button
+        GoHomeSweetChild = ttk.Button(self, text="Back",  command = lambda:controller.show_frame(MainPage))
+        StudentOne = ttk.Button(FrameOne, text = "TestStudent", command = lambda:GordonInterview())
+        StudentTwo = ttk.Button(FrameTwo, text = "TestStudent2", command = lambda:SticklyInterview())
+        StudentThree = ttk.Button(FrameThree, text = "TestStudent2", command = lambda:DerrickInterview())
+        StudentFour = ttk.Button(FrameFour, text = "TestStudent2", command = lambda:FloresInterview())
+
+        #Place said Button
+        GoHomeSweetChild.pack(side = "bottom", ipady = 30, ipadx = 60)
+        StudentOne.pack( side = "top", fill = "both", expand=True)
+        StudentTwo.pack( side = "top", fill = "both", expand=True)
+        StudentThree.pack(side = "top", fill ="both", expand=True)
+        StudentFour.pack(side = "top", fill ="both", expand=True)
+
+        #Photo Button Details
+        StudentFour.config(image =self.photo3)
+        StudentThree.config(image =self.photo4)
+        StudentTwo.config(image =self.photo2)
+        StudentOne.config(image =self.photo)
+
+
+def testFunction():
+
+    print("This button has not been implemented yet")
+
+def closeApp():
+
+    sys.exit(0)
+
+def SMiller():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/SMillerInterview.mp4")
+
+def DLash():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/DLashInterview.mp4")
+
+
+def DerrickInterview():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/DerrickInterview.mp4")
+
+def FloresInterview():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/FloresInterview.mp4")
+
+def CSC2200():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/CSC2200.mp4")
+
+def CSC3700():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/CSC3700.mp4")
+
+
+def CSC4210():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/CSC4210.mp4")
+
+def CSC2300():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/CSC2300.mp4")
+
+def CSC3200():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/CSC3200.mp4")
+
+def CSC3850():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/CSC3850.mp4")
+
+def CSC3100():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/CSC3100.mp4")
+
+def CSC3800():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/CSC3800.mp4")
+
+def KajInterview2():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/KajjumbaPROFinterview.mp4")
+
+
+def OijInterview1():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/OijInterview.mp4")
+
+def GordonInterview():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/GordonInterview.mp4")
+
+def SticklyInterview():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/SticklyInterview.mp4")
+
+def Video17():
+
+    os.system("omxplayer -b /home/pi/Desktop/GUIVideos/Rogue\ One\ A\ Star\ Wars\ Story\ Trailer\ #2\ \(Official\).mp4")
+
+app = CapGuiMain()
+app.geometry("800x480")
+app.configure(background="blue")
+app.overrideredirect(1)
+app.mainloop()
